@@ -12,6 +12,27 @@ import {
   MessageCircle
 } from 'lucide-react';
 
+// Scrolling Banner Component
+const ScrollingBanner = () => {
+  return (
+    <div className="overflow-hidden bg-indigo-600">
+      <div className="whitespace-nowrap" style={{ animation: 'marquee 15s linear infinite' }}>
+        <span className="text-white text-lg font-bold mx-8">Stay Informed, Stay Empowered</span>
+        <span className="text-white text-lg font-bold mx-8">Stay Informed, Stay Empowered</span>
+        <span className="text-white text-lg font-bold mx-8">Stay Informed, Stay Empowered</span>
+        <span className="text-white text-lg font-bold mx-8">Stay Informed, Stay Empowered</span>
+        <span className="text-white text-lg font-bold mx-8">Stay Informed, Stay Empowered</span>
+      </div>
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 // Sample articles data with real Unsplash images
 const articlesData = [
   {
@@ -171,7 +192,7 @@ function App() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (email && password) {
-      setCurrentView('dashboard');
+      setCurrentView('Home');
     } else {
       alert('Please enter your email and password.');
     }
@@ -207,20 +228,18 @@ function App() {
     ];
 
     return (
-      <Menu as="div" className="relative inline-block text-left">
-        <Menu.Button className="px-3 py-1 rounded-md text-sm bg-gray-300 text-gray-700 hover:bg-gray-400 flex items-center gap-1">
+      <Menu as="div" className="relative inline-flex text-left">
+        <Menu.Button className="px-3 py-1 rounded-md text-sm bg-gray-300 text-gray-700 hover:bg-gray-400 flex items-center justify-center gap-1">
           <Share2 className="h-4 w-4" />
-          Share
+          <span>Share</span>
         </Menu.Button>
-        <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+        <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
           <div className="py-1">
             {shareOptions.map((option) => (
               <Menu.Item key={option.name}>
                 {({ active }) => (
                   <button
-                    className={`${
-                      active ? 'bg-gray-100' : ''
-                    } flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700`}
+                    className={`${active ? 'bg-gray-100' : ''} flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700`}
                     onClick={option.action}
                   >
                     <option.icon className="h-4 w-4" />
@@ -236,9 +255,7 @@ function App() {
   };
 
   const MobileMenu = () => (
-    <div className={`${
-      isMenuOpen ? 'block' : 'hidden'
-    } md:hidden fixed inset-0 bg-gray-800 bg-opacity-75 z-50`}>
+    <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden fixed inset-0 bg-gray-800 bg-opacity-75 z-50`}>
       <div className="fixed inset-y-0 right-0 max-w-xs w-full bg-white shadow-xl">
         <div className="p-6">
           <div className="flex items-center justify-between mb-8">
@@ -254,13 +271,13 @@ function App() {
           <nav className="space-y-6">
             <button
               onClick={() => {
-                setCurrentView('dashboard');
+                setCurrentView('Home');
                 setIsMenuOpen(false);
               }}
               className="flex items-center gap-2 w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
             >
               <Newspaper className="h-5 w-5" />
-              Dashboard
+              Home
             </button>
             <button
               onClick={() => {
@@ -424,7 +441,7 @@ function App() {
     );
   }
 
-  // Dashboard view with articles and additional actions
+  // Home view with articles and additional actions
   return (
     <div className="min-h-screen bg-[#EEEEEE] flex flex-col">
       <nav className="bg-white shadow-sm">
@@ -432,16 +449,16 @@ function App() {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <Newspaper className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">News Digest</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">Newsly</span>
             </div>
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-4">
               <button 
-                onClick={() => setCurrentView('dashboard')}
+                onClick={() => setCurrentView('Home')}
                 className="text-gray-600 hover:text-gray-900 flex items-center gap-1"
               >
                 <Newspaper className="h-5 w-5" />
-                Dashboard
+                Home
               </button>
               <button 
                 onClick={() => setCurrentView('saved')}
@@ -481,8 +498,11 @@ function App() {
       {/* Mobile menu */}
       <MobileMenu />
 
+      {/* Scrolling banner added below the navigation */}
+      <ScrollingBanner />
+
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {currentView === 'dashboard' && (
+        {currentView === 'Home' && (
           <>
             {/* Category filters */}
             <div className="flex flex-wrap gap-2 mb-6">
@@ -504,7 +524,7 @@ function App() {
             {/* Articles */}
             <div className="space-y-6">
               {filteredArticles.map((article, index) => (
-                <div key={index} className="bg-[#E8E9EB] rounded-lg shadow-md overflow-hidden">
+                <div key={index} className="bg-[#E8E9EB] rounded-lg shadow-md">
                   <div className="flex flex-col md:flex-row">
                     <div className="flex-1 p-6">
                       <div className="flex items-start justify-between">
@@ -547,7 +567,7 @@ function App() {
                         </a>
                       </div>
                     </div>
-                    <div className="md:w-1/3">
+                    <div className="md:w-1/3 overflow-hidden">
                       <img
                         src={article.image}
                         alt={article.title}
@@ -568,8 +588,7 @@ function App() {
               <p className="text-gray-600">No saved articles yet.</p>
             ) : (
               savedArticles.map((article, index) => (
-                <div key={index} className="bg-[#E8E9EB] rounded-lg shadow-md overflow-hidden">
-                  {/* Same article layout as in dashboard */}
+                <div key={index} className="bg-[#E8E9EB] rounded-lg shadow-md">
                   <div className="flex flex-col md:flex-row">
                     <div className="flex-1 p-6">
                       <div className="flex items-start justify-between">
@@ -596,7 +615,7 @@ function App() {
                         </a>
                       </div>
                     </div>
-                    <div className="md:w-1/3">
+                    <div className="md:w-1/3 overflow-hidden">
                       <img
                         src={article.image}
                         alt={article.title}
@@ -648,8 +667,53 @@ function App() {
           </div>
         )}
       </main>
-      <footer className="bg-gray-800 text-white text-center py-4 mt-auto">
-        <p>&copy; 2025 News Digest. All rights reserved.</p>
+      <footer className="bg-gray-800 text-white py-8 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Get in Touch */}
+          <div>
+            <h3 className="text-xl font-bold mb-4">Get in Touch</h3>
+            <p className="text-gray-300">Address: 123rd Street, Bangalore</p>
+            <p className="text-gray-300">Phone: 948*******</p>
+            <p className="mt-2 text-gray-400">We’d love to hear from you! Whether you have a question or just want to say hi, drop us a message.</p>
+          </div>
+    
+          {/* Categories */}
+          <div>
+            <h3 className="text-xl font-bold mb-4">Categories</h3>
+            <ul className="space-y-2">
+              {['Technology', 'Cricket', 'Politics', 'Sports', 'Business', 'World', 'Education'].map((cat) => (
+                <li key={cat}>
+                  <a href="#" className="hover:text-indigo-400 transition-colors">
+                    {cat}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+    
+          {/* Social Media */}
+          <div>
+            <h3 className="text-xl font-bold mb-4">Follow Us</h3>
+            <div className="flex space-x-4">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400">
+                <Instagram className="h-6 w-6" />
+              </a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400">
+                <Facebook className="h-6 w-6" />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400">
+                {/* Replace with a Twitter icon if desired */}
+                <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                  <path d="M24 4.557a9.93 9.93 0 01-2.828.775A4.932 4.932 0 0023.337 3a9.865 9.865 0 01-3.127 1.195A4.916 4.916 0 0016.616 3c-2.724 0-4.932 2.207-4.932 4.932 0 .386.044.762.127 1.124C7.728 8.88 4.1 6.922 1.671 3.883a4.902 4.902 0 00-.666 2.479c0 1.708.87 3.215 2.191 4.099a4.904 4.904 0 01-2.231-.616v.062c0 2.385 1.697 4.374 3.946 4.827a4.935 4.935 0 01-2.224.084 4.937 4.937 0 004.604 3.417A9.868 9.868 0 010 19.539a13.945 13.945 0 007.548 2.212c9.056 0 14.01-7.496 14.01-13.986 0-.213-.005-.425-.014-.637A10.012 10.012 0 0024 4.557z" />
+                </svg>
+              </a>
+            </div>
+            <p className="mt-4 text-gray-400 text-sm">Stay updated with our latest news and events.</p>
+          </div>
+        </div>
+        <div className="mt-8 border-t border-gray-700 pt-4 text-center">
+          <p className="text-sm text-gray-400">&copy; 2025 Newsly. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   );
